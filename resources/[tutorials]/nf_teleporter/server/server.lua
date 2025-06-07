@@ -1,7 +1,6 @@
 RegisterNetEvent('nf_teleporter:goto', function(targetId)
     local playerId = source
-
-    -- get entity hnandle of target
+    local playerPed = GetPlayerPed(playerId)
     local targetPed = GetPlayerPed(targetId)
 
     if targetPed <= 0 then
@@ -15,17 +14,24 @@ RegisterNetEvent('nf_teleporter:goto', function(targetId)
     -- get coordinates of target
     local targetPos = GetEntityCoords(targetPed)
 
-    -- send the coordinate to the client so it can go to the target
-    TriggerClientEvent('nf_teleporter:teleport', playerId, targetPos)
+    SetEntityCoords(playerPed, targetPos)
 end)
+
 
 
 RegisterNetEvent('nf_teleporter:summon', function(targetId)
     local playerId = source
-    print(playerId)
     local playerPed = GetPlayerPed(playerId)
-    print(playerPed)
     local playerPos = GetEntityCoords(playerPed)
+    local targetPed = GetPlayerPed(targetId)
 
-    TriggerClientEvent('nf_teleporter:teleport', targetId, playerPos)
+    if targetPed <= 0 then
+        TriggerClientEvent('chat:addMessage', playerId, {
+            args = {'Sorry, ' .. targetId .. ' doesn\'t exist.', },
+        })
+
+        return
+    end
+
+    SetEntityCoords(targetPed, playerPos)
 end)
