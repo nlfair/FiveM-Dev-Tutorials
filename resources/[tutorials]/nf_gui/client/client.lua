@@ -26,6 +26,14 @@ end
 
 
 
+function showSubtitle(message, duration)
+    BeginTextCommandPrint('STRING')
+    AddTextComponentString(message)
+    EndTextCommandPrint(duration, true)
+end
+
+
+
 RegisterCommand('testNotification', function(_, _, rawCommand)
     showNotification(
         rawCommand,
@@ -61,7 +69,7 @@ RegisterCommand('testMarker', function()
 
         while GetGameTimer() < (start + 10000) do
             Wait(0)
-            
+
             local playerCoordinates = GetEntityCoords(PlayerPedId())
 
             DrawMarker(
@@ -80,4 +88,12 @@ RegisterCommand('testMarker', function()
             )
         end
     end)
+end, false)
+
+RegisterCommand('testSubtitle', function(_, _, rawCommand)
+    -- can work with color.  Ex: /testSubtitle Go to the ~y~Fleeca~s and rob it.
+    showSubtitle(
+        rawCommand,
+        10000
+    )
 end, false)
