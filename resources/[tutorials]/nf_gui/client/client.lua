@@ -5,6 +5,8 @@ function showNotification(message, color, flash, saveToBrief)
     EndTextCommandThefeedPostTicker(flash, saveToBrief)
 end
 
+
+
 function showAdvancedNotification(message, color, sender, subject, textureDict, iconType, saveToBrief)
     BeginTextCommandThefeedPost('STRING')
     AddTextComponentSubstringPlayerName(message)
@@ -12,6 +14,16 @@ function showAdvancedNotification(message, color, sender, subject, textureDict, 
     EndTextCommandThefeedPostMessagetext(textureDict, textureDict, false, iconType, sender, subject)
     EndTextCommandThefeedPostTicker(flase, saveToBrief)
 end
+
+
+
+function showAlert(message, beep, duration)
+    AddTextEntry('NF_ALERT', message)
+
+    BeginTextCommandDisplayHelp('NF_ALERT')
+    EndTextCommandDisplayHelp(0, false, beep, duration)
+end
+
 
 
 RegisterCommand('testNotification', function(_, _, rawCommand)
@@ -33,4 +45,39 @@ RegisterCommand('testAdvancedNotification', function(_, _, rawCommand)
         8, -- rp
         true
     )
+end, false)
+
+RegisterCommand('testAlert', function(_, _, rawCommand)
+    showAlert(
+        rawCommand,
+        true,
+        -1
+    )
+end, false)
+
+RegisterCommand('testMarker', function()
+    CreateThread(function()
+        local start = GetGameTimer()
+
+        while GetGameTimer() < (start + 10000) do
+            Wait(0)
+            
+            local playerCoordinates = GetEntityCoords(PlayerPedId())
+
+            DrawMarker(
+                6,
+                playerCoordinates.x, playerCoordinates.y, playerCoordinates.z,
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0,
+                1.0, 1.0, 1.0,
+                0,
+                0,
+                220,
+                180,
+                true,
+                true,
+                2
+            )
+        end
+    end)
 end, false)
