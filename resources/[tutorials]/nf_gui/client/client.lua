@@ -34,6 +34,20 @@ end
 
 
 
+function showBusySpinner(message)
+    BeginTextCommandBusyspinnerOn('STRING')
+    AddTextComponentSubstringPlayerName(message)
+    EndTextCommandBusyspinnerOn(5)
+end
+
+
+
+function hideBusySpinner()
+    BusyspinnerOff()
+end
+
+
+
 RegisterCommand('testNotification', function(_, _, rawCommand)
     showNotification(
         rawCommand,
@@ -96,4 +110,12 @@ RegisterCommand('testSubtitle', function(_, _, rawCommand)
         rawCommand,
         10000
     )
+end, false)
+
+RegisterCommand('testSpinner', function(_, _, rawCommand)
+    if rawCommand == 'testSpinner' then
+        hideBusySpinner()
+    else
+        showBusySpinner(rawCommand)
+    end
 end, false)
